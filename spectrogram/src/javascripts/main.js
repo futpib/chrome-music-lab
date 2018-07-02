@@ -86,6 +86,8 @@ $(function(){
 		$('.music-box__tool-tip').hide(0);
 		$('#loadingSound').hide(0);
 
+		var locked = false;
+
 		$('.music-box__buttons__button').click(function(e){
 			sp.startRender();
 			
@@ -120,6 +122,8 @@ $(function(){
 					sp.loopChanged( true );
 					$('#loadingMessage').text($(this).attr('data-name'));
 					sp.play($(this).attr('data-src'));
+				}else if ($(this).attr('data-lock') !== undefined) {
+					locked = !locked;
 				}
 			}
 		})
@@ -133,10 +137,10 @@ $(function(){
 		}
 
 		window.addEventListener('blur', function() {
-		   killSound();
+			!locked && killSound();
 		});
 		document.addEventListener('visibilitychange', function(){
-		    killSound();
+			!locked && killSound();
 		});
 
         var decodeBuffer = function(file) {
